@@ -5,7 +5,7 @@ const getAllPet = (pageNumber) => {
   const offset = (pageNumber - 1) * 12;
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT * FROM pet LIMIT ? OFFSET ?",
+      "SELECT pet.id AS pet_id, pet.name,pet.price,pet.discount,pet.image_1,pet.breed_id, breed.name AS breed_name,breed.species_id FROM pet JOIN breed ON pet.breed_id = breed.id LIMIT ? OFFSET ?",
       [12, offset],
       (err, results) => {
         if (err) {
@@ -18,13 +18,11 @@ const getAllPet = (pageNumber) => {
     );
   });
 };
-
-const getPetWithSpecies = (type) => {
-  const id = type === "cat" ? 2 : 1;
-
+// pet.id AS pet_id, pet.name,pet.price,pet.discount,pet.image_1,pet.breed_id,
+const getPetWithSpecies = (id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT pet.*, breed.* FROM pet JOIN breed ON pet.breed_id = breed.id WHERE breed.species_id = ?",
+      "SELECT *, pet.id AS pet_id,breed.name as breed_name FROM pet JOIN breed ON pet.breed_id = breed.id WHERE breed.species_id = ?",
       [id],
       (err, results) => {
         if (err) {
@@ -41,7 +39,7 @@ const getPetWithSpecies = (type) => {
 const getPetWithBreed = (breed_id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT pet.*, breed.* FROM pet JOIN breed ON pet.breed_id = breed.id WHERE pet.breed_id = ?",
+      "SELECT *,pet.id as pet_id,breed.name as breed_name FROM pet JOIN breed ON pet.breed_id = breed.id WHERE pet.breed_id = ?",
       [breed_id],
       (err, results) => {
         if (err) {
@@ -63,11 +61,8 @@ const getPet = (id) => {
         console.log(err);
       } else {
         // Kiểm tra xem có kết quả trả về không
-        if (results.length === 0) {
-          reject("Pet not found");
-        } else {
-          resolve(results[0]); // Trả về thông tin của pet đầu tiên (nếu có)
-        }
+
+        resolve(results[0]); // Trả về thông tin của pet đầu tiên (nếu có)
       }
     });
   });
@@ -94,7 +89,7 @@ const getAllPetCare = (pageNumber) => {
 const getPetCareCatalogType = (id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT pet_care_product.*, catalog.* FROM pet_care_product JOIN catalog ON pet_care_product.catalog = catalog.id WHERE catalog.type_id = ?",
+      "SELECT pet_care_product.id AS product_id, pet_care_product.name,pet_care_product.price,pet_care_product.discount,pet_care_product.image_1,pet_care_product.catalog,pet_care_product.specieid ,catalog.id FROM pet_care_product JOIN catalog ON pet_care_product.catalog = catalog.id WHERE catalog.type_id = ?",
       [id],
       (err, results) => {
         if (err) {
@@ -102,11 +97,8 @@ const getPetCareCatalogType = (id) => {
           console.log(err);
         } else {
           // Kiểm tra xem có kết quả trả về không
-          if (results.length === 0) {
-            reject("Pet not found");
-          } else {
-            resolve(results); // Trả về thông tin của pet đầu tiên (nếu có)
-          }
+
+          resolve(results); // Trả về thông tin của pet đầu tiên (nếu có)
         }
       }
     );
@@ -116,7 +108,7 @@ const getPetCareCatalogType = (id) => {
 const getPetCareCatalog = (id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT * FROM pet_care_product WHERE catalog = ?",
+      "SELECT *,id as product_id FROM pet_care_product WHERE catalog = ?",
       [id],
       (err, results) => {
         if (err) {
@@ -124,11 +116,8 @@ const getPetCareCatalog = (id) => {
           console.log(err);
         } else {
           // Kiểm tra xem có kết quả trả về không
-          if (results.length === 0) {
-            reject("Pet not found");
-          } else {
-            resolve(results); // Trả về thông tin của pet đầu tiên (nếu có)
-          }
+
+          resolve(results); // Trả về thông tin của pet đầu tiên (nếu có)
         }
       }
     );
@@ -146,11 +135,79 @@ const getPetCareWithSpecies = (id) => {
           console.log(err);
         } else {
           // Kiểm tra xem có kết quả trả về không
-          if (results.length === 0) {
-            reject("Pet not found");
-          } else {
-            resolve(results); // Trả về thông tin của pet đầu tiên (nếu có)
-          }
+
+          resolve(results); // Trả về thông tin của pet đầu tiên (nếu có)
+        }
+      }
+    );
+  });
+};
+
+const getBreed = (id) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT * FROM breed WHERE species_id=?",
+      [id],
+
+      (err, results) => {
+        if (err) {
+          reject("Fail to get resource");
+          console.log(err);
+        } else {
+          // Kiểm tra xem có kết quả trả về không
+
+          resolve(results); // Trả về thông tin của pet đầu tiên (nếu có)
+        }
+      }
+    );
+  });
+};
+const getCatalog = (id) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT * FROM catalog WHERE type_id=?",
+      [id],
+
+      (err, results) => {
+        if (err) {
+          reject("Fail to get resource");
+          console.log(err);
+        } else {
+          // Kiểm tra xem có kết quả trả về không
+
+          resolve(results); // Trả về thông tin của pet đầu tiên (nếu có)
+        }
+      }
+    );
+  });
+};
+
+const getPetId = (id) => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM pet WHERE id = ?", [id], (err, results) => {
+      if (err) {
+        reject("Fail to get resource");
+        console.log(err);
+      } else {
+        // Kiểm tra xem có kết quả trả về không
+
+        resolve(results[0]); // Trả về thông tin của pet đầu tiên (nếu có)
+      }
+    });
+  });
+};
+const getPetCareId = (id) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT * FROM pet_care_product WHERE id = ?",
+      [id],
+      (err, results) => {
+        if (err) {
+          reject("Fail to get resource");
+          console.log(err);
+        } else {
+          // Kiểm tra xem có kết quả trả về không
+          resolve(results[0]); // Trả về thông tin của pet đầu tiên (nếu có)
         }
       }
     );
@@ -166,4 +223,8 @@ module.exports = {
   getPetCareCatalogType,
   getPetCareWithSpecies,
   getAllPetCare,
+  getBreed,
+  getCatalog,
+  getPetId,
+  getPetCareId,
 };

@@ -13,11 +13,8 @@ const getPetCart = (id) => {
           console.log(err);
         } else {
           // Kiểm tra xem có kết quả trả về không
-          if (results.length === 0) {
-            reject("Pet not found");
-          } else {
-            resolve(results); // Trả về thông tin của pet đầu tiên (nếu có)
-          }
+
+          resolve(results); // Trả về thông tin của pet đầu tiên (nếu có)
         }
       }
     );
@@ -35,11 +32,8 @@ const getStuffCart = (id) => {
           console.log(err);
         } else {
           // Kiểm tra xem có kết quả trả về không
-          if (results.length === 0) {
-            reject("Pet not found");
-          } else {
-            resolve(results); // Trả về thông tin của pet đầu tiên (nếu có)
-          }
+
+          resolve(results); // Trả về thông tin của pet đầu tiên (nếu có)
         }
       }
     );

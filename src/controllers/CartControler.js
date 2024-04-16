@@ -3,8 +3,8 @@ const CartService = require("../services/CartService");
 const getCart = async (req, res) => {
   try {
     // check trùng số điện thoại
-    const pets = await CartService.getPetCart(req.body.user_id);
-    const petProduct = await CartService.getStuffCart(req.body.user_id);
+    const pets = await CartService.getPetCart(req.params.id);
+    const petProduct = await CartService.getStuffCart(req.params.id);
 
     //Tạo tài khoản
     return res.status(200).json({ pets, petProduct });
@@ -19,7 +19,7 @@ const addCart = async (req, res) => {
     if (req.body.type === "pet") {
       const pets = await CartService.addPetCart(
         req.body.user_id,
-        req.body.pet_id
+        req.body.stuff_id
       );
     } else if (req.body.type === "stuff") {
       const petProduct = await CartService.addStuffCart(
@@ -58,12 +58,12 @@ const removeCart = async (req, res) => {
     if (req.body.type === "pet") {
       const pets = await CartService.removePetCart(
         req.body.user_id,
-        req.body.pet_id
+        req.body.product_id
       );
     } else if (req.body.type === "stuff") {
       const petProduct = await CartService.removeStuffCart(
         req.body.user_id,
-        req.body.stuff_id
+        req.body.product_id
       );
     }
 
@@ -104,5 +104,6 @@ module.exports = {
   removeCart,
   clearCart,
   addCart,
+
   // placeOrder,
 };

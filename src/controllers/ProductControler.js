@@ -3,11 +3,8 @@ const ProductService = require("../services/ProductService");
 const getAllPet = async (req, res) => {
   try {
     // check trùng số điện thoại
-    const pets = await ProductService.getAllPet(req.body.page);
+    const pets = await ProductService.getAllPet(req.params.page);
     console.log(pets);
-    if (!pets) {
-      return res.status(409).json({ status: "user exist" });
-    }
 
     //Tạo tài khoản
     return res.status(200).json(pets);
@@ -19,11 +16,8 @@ const getAllPet = async (req, res) => {
 const getPetWithBreed = async (req, res) => {
   try {
     // check trùng số điện thoại
-    const pets = await ProductService.getPetWithBreed(req.body.breed_id);
+    const pets = await ProductService.getPetWithBreed(req.params.id);
     console.log(pets);
-    if (!pets) {
-      return res.status(409).json({ status: "user exist" });
-    }
 
     //Tạo tài khoản
     return res.status(200).json(pets);
@@ -36,11 +30,8 @@ const getPetWithBreed = async (req, res) => {
 const getPetWithSpecies = async (req, res) => {
   try {
     // check trùng số điện thoại
-    const pets = await ProductService.getPetWithSpecies(req.body.type);
+    const pets = await ProductService.getPetWithSpecies(req.params.id);
     console.log(pets);
-    if (!pets) {
-      return res.status(409).json({ status: "user exist" });
-    }
 
     //Tạo tài khoản
     return res.status(200).json(pets);
@@ -53,11 +44,8 @@ const getPetWithSpecies = async (req, res) => {
 const getAllPetCare = async (req, res) => {
   try {
     // check trùng số điện thoại
-    const pets = await ProductService.getAllPetCare(req.body.page);
+    const pets = await ProductService.getAllPetCare(req.params.page);
     console.log(pets);
-    if (!pets) {
-      return res.status(409).json({ status: "user exist" });
-    }
 
     //Tạo tài khoản
     return res.status(200).json(pets);
@@ -69,12 +57,11 @@ const getAllPetCare = async (req, res) => {
 const getPetCareCatalogType = async (req, res) => {
   try {
     // check trùng số điện thoại
-    const pets = await ProductService.getPetCareCatalogType(req.body.id);
+    const pets = await ProductService.getPetCareCatalogType(req.params.id);
     console.log(pets);
-    if (!pets) {
-      return res.status(409).json({ status: "user exist" });
-    }
-
+    // if (!pets) {
+    //   return res.status(200).json({ status: "ok" });
+    // }
     //Tạo tài khoản
     return res.status(200).json(pets);
   } catch (e) {
@@ -86,12 +73,8 @@ const getPetCareCatalogType = async (req, res) => {
 const getPetCareCatalog = async (req, res) => {
   try {
     // check trùng số điện thoại
-    const pets = await ProductService.getPetCareCatalog(req.body.id);
+    const pets = await ProductService.getPetCareCatalog(req.params.id);
     console.log(pets);
-    if (!pets) {
-      return res.status(409).json({ status: "user exist" });
-    }
-
     //Tạo tài khoản
     return res.status(200).json(pets);
   } catch (e) {
@@ -102,11 +85,8 @@ const getPetCareCatalog = async (req, res) => {
 const getPetCareWithSpecies = async (req, res) => {
   try {
     // check trùng số điện thoại
-    const pets = await ProductService.getPetCareWithSpecies(req.body.id);
+    const pets = await ProductService.getPetCareWithSpecies(req.params.id);
     console.log(pets);
-    if (!pets) {
-      return res.status(409).json({ status: "user exist" });
-    }
 
     //Tạo tài khoản
     return res.status(200).json(pets);
@@ -116,6 +96,57 @@ const getPetCareWithSpecies = async (req, res) => {
   }
 };
 
+const getCatalog = async (req, res) => {
+  try {
+    const id = req.params.id;
+    // check trùng số điện thoại
+    const catalog = await ProductService.getCatalog(id);
+    //Tạo tài khoản
+    return res.status(200).json(catalog);
+  } catch (e) {
+    console.log(e);
+    return res.status(404).json({});
+  }
+};
+
+const getBreed = async (req, res) => {
+  try {
+    // check trùng số điện thoại
+    const id = req.params.id;
+    const breed = await ProductService.getBreed(id);
+    //Tạo tài khoản
+    return res.status(200).json(breed);
+  } catch (e) {
+    console.log(e);
+    return res.status(404).json({});
+  }
+};
+
+const getPetId = async (req, res) => {
+  try {
+    // check trùng số điện thoại
+    const id = req.params.id;
+    const breed = await ProductService.getPetId(id);
+    //Tạo tài khoản
+    return res.status(200).json(breed);
+  } catch (e) {
+    console.log(e);
+    return res.status(404).json({});
+  }
+};
+
+const getPetCareId = async (req, res) => {
+  try {
+    // check trùng số điện thoại
+    const id = req.params.id;
+    const breed = await ProductService.getPetCareId(id);
+    //Tạo tài khoản
+    return res.status(200).json(breed);
+  } catch (e) {
+    console.log(e);
+    return res.status(404).json({});
+  }
+};
 module.exports = {
   getAllPet,
   getPetWithSpecies,
@@ -124,4 +155,8 @@ module.exports = {
   getPetCareCatalogType,
   getPetCareCatalog,
   getPetCareWithSpecies,
+  getBreed,
+  getCatalog,
+  getPetId,
+  getPetCareId,
 };
